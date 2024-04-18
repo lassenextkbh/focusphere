@@ -34,10 +34,7 @@ export const Toolbar = ({ initialData, preview }: ToolbarProps) => {
     setTimeout(() => {
       setValue(initialData.title);
       inputRef.current?.focus();
-      inputRef.current?.setSelectionRange(
-        inputRef.current?.value?.length || 0,
-        inputRef.current?.value?.length || 0
-      ); // Move cursor to the end
+      inputRef.current?.setSelectionRange(0, inputRef.current.value.length);
     }, 0);
   };
 
