@@ -23,7 +23,7 @@ const error = () => {
         className="hidden dark:block"
       />
       <h2 className="text-xl font-medium">An error occured!</h2>
-      <h2 className="text-l font-medium">
+      <h2 className="text-l">
         Someone might have spilled coffee on the page you are looking for.
       </h2>
       <Button asChild>
