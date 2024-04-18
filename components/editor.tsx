@@ -5,29 +5,25 @@ import { BlockNoteEditor, PartialBlock } from "@blocknote/core";
 import { BlockNoteView, useBlockNote } from "@blocknote/react";
 import "@blocknote/core/style.css";
 
+import { useEdgeStore } from "@/lib/edgestore";
+
 interface EditorProps {
   onChange: (value: string) => void;
   initialContent?: string;
   editable?: boolean;
 }
 
-// Custom block that uploads a file to tmpfiles.org and returns the URL to the uploaded file. TODO: Add permanent storage solution.
-async function uploadFile(file: File) {
-  const body = new FormData();
-  body.append("file", file);
-
-  const ret = await fetch("https://tmpfiles.org/api/v1/upload", {
-    method: "POST",
-    body: body,
-  });
-  return (await ret.json()).data.url.replace(
-    "tmpfiles.org/",
-    "tmpfiles.org/dl/"
-  );
-}
-
-export const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
+const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
   const { resolvedTheme } = useTheme();
+  const { edgestore } = useEdgeStore();
+
+  const handleUpload = async (file: File) => {
+    const response = await edgestore.publicFiles.upload({
+      file,
+    });
+
+    return response.url;
+  };
 
   const editor: BlockNoteEditor = useBlockNote({
     editable,
@@ -37,7 +33,7 @@ export const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
     onEditorContentChange: (editor) => {
       onChange(JSON.stringify(editor.topLevelBlocks, null, 2));
     },
-    uploadFile,
+    uploadFile: handleUpload,
   });
 
   return (
@@ -49,3 +45,5 @@ export const Editor = ({ onChange, initialContent, editable }: EditorProps) => {
     </div>
   );
 };
+
+export default Editor;
