@@ -24,7 +24,7 @@ const error = () => {
       />
       <h2 className="text-xl font-medium">An error occured!</h2>
       <h2 className="text-l">
-        Someone might have spilled coffee on the page you are looking for.
+        Someone might have spilled coffee on the page you were looking for.
       </h2>
       <Button asChild>
         <Link href="/documents">Go back</Link>
